@@ -18,8 +18,16 @@ namespace SmallCommitsWorkshopTests.Controllers {
 		private IServiceScope m_scope;
 		private UsersContext m_usersContext;
 		private User[] m_defaultUsers = new User[] {
-			new User() { Id = 42L, UserName = "JaneSmith", IsActive = true },
-			new User() { Id = 156L, UserName = "JoeSmith", IsActive = false },
+			new User() { 
+				Id = 42L,
+				UserName = "JaneSmith",
+				IsActive = true,
+				BuzzWord = "isPresent" },
+			new User() { 
+				Id = 156L,
+				UserName = "JoeSmith",
+				IsActive = false,
+				BuzzWord = "isJOE!!!" },
 		};
 
 		[SetUp]
@@ -48,6 +56,7 @@ namespace SmallCommitsWorkshopTests.Controllers {
 							{ "id", user.Id },
 							{ "userName", user.UserName },
 							{ "isActive", user.IsActive },
+							{ "buzzWord", user.BuzzWord },
 						}
 					),
 					await response.Content.ReadAsJsonAsync<IDictionary<long, IDictionary<string, object>>>()
@@ -68,6 +77,7 @@ namespace SmallCommitsWorkshopTests.Controllers {
 								{ "id", user.Id },
 								{ "userName", user.UserName },
 								{ "isActive", user.IsActive },
+								{ "buzzWord", user.BuzzWord },
 							}
 						}
 					},
@@ -78,7 +88,11 @@ namespace SmallCommitsWorkshopTests.Controllers {
 
 		[Test]
 		public async Task CreateOrUpdate_UserDoesNotExist_CreatesUser() {
-			User user = new User { Id = 12456L, UserName = "AnotherUser", IsActive = true };
+			User user = new User {
+				Id = 12456L,
+				UserName = "AnotherUser",
+				IsActive = true,
+				BuzzWord = "ANOTHERbuzz" };
 
 			CollectionAssert.DoesNotContain(
 				m_defaultUsers.Select( u => u.Id ),
